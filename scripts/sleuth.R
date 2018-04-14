@@ -1,0 +1,13 @@
+suppressMessages({library("sleuth")})
+sample_id <- t(read.delim(file.path(snakemake@params["sample_tsv"]), header = TRUE, sep="\t")["sample"])
+kal_dirs <- snakemake@params["kal_dirs"]
+s2c <- read.table(file.path(snakemake@params["sample_condition"]), header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+# s2c <- dplyr::select(s2c, sample = run_accession, condition)
+s2c <- dplyr::mutate(s2c, path = kal_dirs)
+so <- sleuth_prep(s2c, extra_bootstrap_summary = TRUE)
+so <- sleuth_fit(so, ~condition, 'full')
+so <- sleuth_fit(so, ~1, 'reduced')
+so <- sleuth_lrt(so, 'reduced', 'full')
+sleuth_table <- sleuth_results(so, 'reduced:full', 'lrt', show_all = FALSE)
+sleuth_significant <- dplyr::filter(sleuth_table, qval <= 0.05)
+write(t(sleuth_significant), file = file.path(snakemake@output[0]), sep = "\t")
