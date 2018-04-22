@@ -4,13 +4,13 @@ from numpy import std
 
 
 # To process fq files with awk, they need  to be unzipped
-def gunzip(wildcards, sample):
+def gunzip(sample):
 	cmd_args = ["gzip", "-d", sample]
 	subprocess.run(cmd_args)
 
 # Returns the average length of all reads in the sample
-def avg_read_length(wildcards, sample):
-	gunzip(wildcards, sample)
+def avg_read_len(sample):
+	gunzip(sample)
 	filter_str = "NR%4 == 2 {lengths[length($0)]++} END {for(l in lengths) {print l, lengths[l]}}"
 	cmd_args = ["awk", filter_str, sample[:-3]]
 	proc = subprocess.Popen(cmd_args, stdout=subprocess.PIPE)
@@ -18,8 +18,8 @@ def avg_read_length(wildcards, sample):
 	return int(proc.stdout.read().decode().rstrip('\n'))
 
 # Returns the standard deviation of all reads lengths in the sample
-def std_dev_read_length(wildcards, sample):
-	gunzip(wildcards, sample)
+def std_dev_read_length(sample):
+	gunzip(sample)
 	filter_str = "NR%4 == 2 {print length($0)}"
 	cmd_args = ["awk", filter_str, sample[:-3]]
 	proc = subprocess.Popen(cmd_args, subprocess.PIPE)
@@ -54,10 +54,8 @@ rule kallisto_quant_paired:
 	conda: "../envs/kallisto-sleuth.yaml"
 	params:
 		out_dir = config["folders"]["output_folder"] + "/{sample}",
-		bs_samples = config["kallisto"]["bootstrap_samples"]
-		single = ""
-		if config["kallisto"]["single"] == "yes":
-			single = "--single"
+		bs_samples = config["kallisto"]["bootstrap_samples"],
+		single = lambda wildcards: config["kallisto"]["single"]
 	shell:
 		"kallisto quant -i {input[0]} -o {params.out_dir} -b {params.bs_samples} {params.single} {input[1]} {input[2]}"
 
@@ -73,9 +71,9 @@ rule kallisto_quant_single:
 	params:
 		out_dir = config["folders"]["output_folder"] + "/{sample}",
 		bs_samples = config["kallisto"]["bootstrap_samples"],
-		# Hoping it's possible to set params via function
-		avg_len = avg_read_len(wildcards, {input[0]})
-		std_dev = std_dev_read_length(wildcards, {input[0]})
+		# Trying to set params via custom function
+		avg_len = 62 # avg_read_len("../" + config["folders"]["trim_folder"] + "/{wildcards.sample}_trimmed.fq.gz"),
+		std_dev = 0.0 # std_dev_read_length("../" + config["folders"]["trim_folder"] + "/{wildcards.sample}_trimmed.fq.gz")
 	shell:
-		"kallisto quant -i {input[0]} -o {params.out_dir} -b {params.bs_samples} --single -l {params.avg_len} -s {params.std_dev} {input[1]} {input[2]}"
+		"kallisto quant -i {input[0]} -o {params.out_dir} -b {params.bs_samples} --single -l {params.avg_len} -s {params.std_dev} {input[1]}"
 	

@@ -16,8 +16,8 @@ rule trim_single:
 	input:
 		config["folders"]["data_folder"] + "/{sample}.fq.gz"
 	output:
-		config["folders"]["data_folder"] + "/{sample}_trimmed.fq.gz"
-	conda: "../env/kallisto-sleuth.yaml"
+		config["folders"]["trim_folder"] + "/{sample}_trimmed.fq.gz"
+	conda: "../envs/kallisto-sleuth.yaml"
 	params:
 		trim_folder = config["folders"]["trim_folder"],
 		phred_qual = config["trim_galore"]["phred_quality"]
