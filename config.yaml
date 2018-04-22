@@ -16,5 +16,6 @@ trim_galore:
 # kallisto parameters
 kallisto:
         bootstrap_samples: "100"
+        single: "yes"
 sleuth:
         sample_condition: "data/sample_condition.txt"
