@@ -14,7 +14,7 @@ rule all:
 		
 
 
-include: "rules/kallisto.smk"
 include: "rules/sleuth.smk"
-include: "rules/trim.smk"
 include: "rules/formats.smk"
+include: "rules/trim.smk"
+include: "rules/kallisto.smk"

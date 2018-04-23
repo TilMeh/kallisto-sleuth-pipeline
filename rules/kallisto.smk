@@ -2,33 +2,27 @@ import subprocess
 from os import remove
 from numpy import std
 
+avg_len = -1
+std_dev = -1.0
 
-# To process fq files with awk, they need  to be unzipped
-def gunzip(sample):
-	cmd_args = ["gzip", "-d", sample]
-	subprocess.run(cmd_args)
 
 # Returns the average length of all reads in the sample
 def avg_read_len(sample):
-	gunzip(sample)
 	filter_str = "NR%4 == 2 {lengths[length($0)]++} END {for(l in lengths) {print l, lengths[l]}}"
-	cmd_args = ["awk", filter_str, sample[:-3]]
+	cmd_args = ["awk", filter_str, sample]
 	proc = subprocess.Popen(cmd_args, stdout=subprocess.PIPE)
-	remove(sample[:-3])
 	return int(proc.stdout.read().decode().rstrip('\n'))
 
 # Returns the standard deviation of all reads lengths in the sample
 def std_dev_read_length(sample):
-	gunzip(sample)
 	filter_str = "NR%4 == 2 {print length($0)}"
-	cmd_args = ["awk", filter_str, sample[:-3]]
+	cmd_args = ["awk", filter_str, sample]
 	proc = subprocess.Popen(cmd_args, subprocess.PIPE)
 	output = proc.stdout.read().decode()
 	lengths = []
 	for x in output:
 		if(x):
 			lengths.append(int(x))
-	remove(sample[:-3])
 	return std(lengths)
 	
 
@@ -59,10 +53,23 @@ rule kallisto_quant_paired:
 	shell:
 		"kallisto quant -i {input[0]} -o {params.out_dir} -b {params.bs_samples} {params.single} {input[1]} {input[2]}"
 
+rule kallisto_qs_prep:
+	input:
+		rules.gunzip_trimmed.output
+	output:
+		config["folders"]["data_folder"] + "/{sample}.prep"
+	conda: "../envs/kallisto-sleuth.yaml"
+	run:
+		avg_len = avg_read_len({input[0]})
+		std_dev = std_dev_read_length({input[0]})
+		with open("{output[0]}", "w") as f:
+			f.write(avg_len + " " + std_dev)
+
 rule kallisto_quant_single:
 	input:
 		config["reference"] + ".idx",
-		config["folders"]["trim_folder"] + "/{sample}_trimmed.fq.gz"
+		# config["folders"]["trim_folder"] + "/{sample}_trimmed.fq.gz"
+		rules.kallisto_qs_prep.output
 	output:
 		config["folders"]["output_folder"] + "/{sample}/abundance.h5",
 		config["folders"]["output_folder"] + "/{sample}/abundance.tsv",
@@ -72,8 +79,8 @@ rule kallisto_quant_single:
 		out_dir = config["folders"]["output_folder"] + "/{sample}",
 		bs_samples = config["kallisto"]["bootstrap_samples"],
 		# Trying to set params via custom function
-		avg_len = 62 # avg_read_len("../" + config["folders"]["trim_folder"] + "/{wildcards.sample}_trimmed.fq.gz"),
-		std_dev = 0.0 # std_dev_read_length("../" + config["folders"]["trim_folder"] + "/{wildcards.sample}_trimmed.fq.gz")
+		avg_len = avg_len,
+		std_dev = std_dev
 	shell:
-		"kallisto quant -i {input[0]} -o {params.out_dir} -b {params.bs_samples} --single -l {params.avg_len} -s {params.std_dev} {input[1]}"
-	
+		"kallisto quant -i {input[0]} -o {params.out_dir} -b {params.bs_samples} --single -l {params.avg_len} -s {params.std_dev} {input[1]}.gz"
+
