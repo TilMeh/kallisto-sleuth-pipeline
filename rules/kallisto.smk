@@ -58,7 +58,7 @@ rule kallisto_qs_prep:
 		rules.gunzip_trimmed.output
 	output:
 		config["folders"]["data_folder"] + "/{sample}.prep"
-	conda: "../envs/kallisto-sleuth.yaml"
+	# conda: "../envs/kallisto-sleuth.yaml"
 	run:
 		avg_len = avg_read_len({input[0]})
 		std_dev = std_dev_read_length({input[0]})
