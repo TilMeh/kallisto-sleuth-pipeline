@@ -84,7 +84,7 @@ rule kallisto_qs_prep:
 rule kallisto_quant_single:
 	input:
 		config["reference"] + ".idx",
-		# config["folders"]["trim_folder"] + "/{sample}_trimmed.fq.gz"
+		config["folders"]["trim_folder"] + "/{sample}_trimmed.fq.gz"
 		rules.kallisto_qs_prep.output
 	output:
 		config["folders"]["output_folder"] + "/{sample}/abundance.h5",
