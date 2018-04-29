@@ -77,14 +77,16 @@ rule kallisto_qs_prep:
 	# conda: "../envs/kallisto-sleuth.yaml"
 	run:
 		avg_len = avg_read_len(input[0])
+		print("Set avg_len to " + str(avg_len))
 		std_dev = std_dev_read_length(input[0])
+		print("Set std_dev to " + str(std_dev))
 		with open(output[0], "w") as f:
 			f.write(str(avg_len) + " " + str(std_dev))
 
 rule kallisto_quant_single:
 	input:
 		config["reference"] + ".idx",
-		config["folders"]["trim_folder"] + "/{sample}_trimmed.fq.gz"
+		config["folders"]["trim_folder"] + "/{sample}_trimmed.fq.gz",
 		rules.kallisto_qs_prep.output
 	output:
 		config["folders"]["output_folder"] + "/{sample}/abundance.h5",
@@ -95,8 +97,8 @@ rule kallisto_quant_single:
 		out_dir = config["folders"]["output_folder"] + "/{sample}",
 		bs_samples = config["kallisto"]["bootstrap_samples"],
 		# Trying to set params via custom function
-		avg_len = avg_len,
-		std_dev = std_dev
+		avg_len = lambda wildcards, input: int(open(input[2]).readlines()[0].split()[0]), #35,
+		std_dev = lambda wildcards, input: float(open(input[2]).readlines()[0].split()[0]) # 0.8
 	shell:
-		"kallisto quant -i {input[0]} -o {params.out_dir} -b {params.bs_samples} --single -l {params.avg_len} -s {params.std_dev} {input[1]}.gz"
+		"kallisto quant -i {input[0]} -o {params.out_dir} -b {params.bs_samples} --single -l {params.avg_len} -s {params.std_dev} {input[1]}"
 
