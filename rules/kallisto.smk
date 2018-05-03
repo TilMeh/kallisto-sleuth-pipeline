@@ -48,7 +48,7 @@ rule kallisto_index:
 		config["reference"] + ".fa"
 	output:
 		config["reference"] + ".idx"
-	conda: "../envs/kallisto-sleuth.yaml"
+	conda: "../envs/ks-env.yaml"
 	shell:
 		"kallisto index -i {output[0]} {input[0]}"
 
@@ -61,7 +61,7 @@ rule kallisto_quant_paired:
 		config["folders"]["output_folder"] + "/{sample}/abundance.h5",
 		config["folders"]["output_folder"] + "/{sample}/abundance.tsv",
 		config["folders"]["output_folder"] + "/{sample}/run_info.json"
-	conda: "../envs/kallisto-sleuth.yaml"
+	conda: "../envs/ks-env.yaml"
 	params:
 		out_dir = config["folders"]["output_folder"] + "/{sample}",
 		bs_samples = config["kallisto"]["bootstrap_samples"],
@@ -74,7 +74,7 @@ rule kallisto_qs_prep:
 		rules.gunzip_trimmed.output
 	output:
 		config["folders"]["data_folder"] + "/{sample}.prep"
-	# conda: "../envs/kallisto-sleuth.yaml"
+	# conda: "../envs/ks-env.yaml"
 	run:
 		avg_len = avg_read_len(input[0])
 		print("Set avg_len to " + str(avg_len))
@@ -92,13 +92,14 @@ rule kallisto_quant_single:
 		config["folders"]["output_folder"] + "/{sample}/abundance.h5",
 		config["folders"]["output_folder"] + "/{sample}/abundance.tsv",
 		config["folders"]["output_folder"] + "/{sample}/run_info.json"
-	conda: "../envs/kallisto-sleuth.yaml"
+	conda: "../envs/ks-env.yaml"
 	params:
 		out_dir = config["folders"]["output_folder"] + "/{sample}",
 		bs_samples = config["kallisto"]["bootstrap_samples"],
 		# Trying to set params via custom function
-		avg_len = lambda wildcards, input: int(open(input[2]).readlines()[0].split()[0]), #35,
-		std_dev = lambda wildcards, input: float(open(input[2]).readlines()[0].split()[0]) # 0.8
+		avg_length = lambda wildcards, input: int(open(input[2]).readlines()[0].split()[0]), #35,
+		std_devi = lambda wildcards, input: float(open(input[2]).readlines()[0].split()[0]) # 0.8
 	shell:
-		"kallisto quant -i {input[0]} -o {params.out_dir} -b {params.bs_samples} --single -l {params.avg_len} -s {params.std_dev} {input[1]}"
+		"kallisto quant -i {input[0]} -o {params.out_dir} --single -l {params.avg_length} -s {params.std_devi} {input[1]}"
+		#"kallisto quant -i {input[0]} -o {params.out_dir} -b {params.bs_samples} --single -l {params.avg_length} -s {params.std_devi} {input[1]}"
 

@@ -9,14 +9,14 @@ folders:
         output_folder: "data/output"
         trim_folder: "data/output/trims"
 # path to reference genome fasta file (including file prefix, excluding file suffix/extension)
-reference: "data/mm_ref_GRCm38.p4_chr4"
+reference: "data/orf_coding_all_R64-2-1_20150113"
 # trim galore parameters
 trim_galore:
         phred_quality: "20"
 # kallisto parameters
 kallisto:
-        bootstrap_samples: "20"
+        bootstrap_samples: "60"
         # set to "--single" for unpaired reads. "" for paired reads.
-        single: "--single"
+        single: ""
 sleuth:
         sample_condition: "data/samples.tsv"

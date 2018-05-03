@@ -6,10 +6,10 @@ rule sleuth:
 		config["sleuth"]["sample_condition"]
 	output:
 		config["folders"]["output_folder"] + "/sleuth_output.tsv"
-	conda: "../envs/kallisto-sleuth.yaml"
+	conda: "../envs/ks-env.yaml"
 	params:
 		sample_tsv = config["samples"],
-		kal_dirs = expand(config["folders"]["output_folder"] + "/{dataset}", dataset=list(samples.index)),
+		kal_dirs = config["folders"]["output_folder"],
 		sample_condition = config["sleuth"]["sample_condition"]	
 	script:
-		"scripts/sleuth.R"
+		"../scripts/sleuth.R"

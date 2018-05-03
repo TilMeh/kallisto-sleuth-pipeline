@@ -5,7 +5,7 @@ rule trim_paired:
 	output:
 		config["folders"]["trim_folder"] + "/{sample}_1_val_1.fq.gz",
 		config["folders"]["trim_folder"] + "/{sample}_2_val_2.fq.gz"
-	conda: "../envs/kallisto-sleuth.yaml"
+	conda: "../envs/ks-env.yaml"
 	params:
 		trim_folder = config["folders"]["trim_folder"],
 		phred_qual = config["trim_galore"]["phred_quality"]
@@ -17,7 +17,7 @@ rule trim_single:
 		config["folders"]["data_folder"] + "/{sample}.fq.gz"
 	output:
 		config["folders"]["trim_folder"] + "/{sample}_trimmed.fq.gz"
-	conda: "../envs/kallisto-sleuth.yaml"
+	conda: "../envs/ks-env.yaml"
 	params:
 		trim_folder = config["folders"]["trim_folder"],
 		phred_qual = config["trim_galore"]["phred_quality"]
@@ -29,7 +29,7 @@ rule trim_single_nogz:
 		config["folders"]["data_folder"] + "/{sample}.fq"
 	output:
 		config["folders"]["data_folder"] + "/{sample}_trimmed.fq"
-	conda: "../env/kallisto-sleuth.yaml"
+	conda: "../env/ks-env.yaml"
 	params:
 		trim_folder = config["folders"]["trim_folder"],
 		phred_qual = config["trim_galore"]["phred_quality"]

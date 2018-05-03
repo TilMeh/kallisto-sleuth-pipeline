@@ -3,7 +3,7 @@ rule shorten_fa:
 		config["folders"]["data_folder"] + "/{sample}.fasta"
 	output:
 		config["folders"]["data_folder"] + "/{sample}.fa.gz"
-	conda: "../envs/kallisto-sleuth.yaml"
+	conda: "../envs/ks-env.yaml"
 	params:
 		shortened = config["folders"]["data_folder"] + "/{sample}.fa"
 	shell:
@@ -14,7 +14,7 @@ rule shorten_fa_gz:
 		config["folders"]["data_folder"] + "/{sample}.fasta.gz"
 	output:
 		config["folders"]["data_folder"] + "/{sample}.fa.gz"
-	conda: "../envs/kallisto-sleuth.yaml"
+	conda: "../envs/ks-env.yaml"
 	shell:
 		"mv {input[0]} {output[0]}"
 
@@ -23,7 +23,7 @@ rule shorten_fq:
 		config["folders"]["data_folder"] + "/{sample}.fastq"
 	output:
 		config["folders"]["data_folder"] + "/{sample}.fq.gz"
-	conda: "../envs/kallisto-sleuth.yaml"
+	conda: "../envs/ks-env.yaml"
 	params:
 		shortened = config["folders"]["data_folder"] + "/{sample}.fq"
 	shell:
@@ -34,7 +34,7 @@ rule shorten_fq_gz:
 		config["folders"]["data_folder"] + "/{sample}.fastq.gz"
 	output:
 		config["folders"]["data_folder"] + "/{sample}.fq.gz"
-	conda: "../envs/kallisto-sleuth.yaml"
+	conda: "../envs/ks-env.yaml"
 	shell:
 		"mv {input[0]} {output[0]}"
 
@@ -43,6 +43,6 @@ rule gunzip_trimmed:
 		config["folders"]["trim_folder"] + "/{sample}_trimmed.fq.gz"
 	output:
 		config["folders"]["trim_folder"] + "/{sample}_trimmed.fq"
-	conda: "../envs/kallisto-sleuth.yaml"
+	conda: "../envs/ks-env.yaml"
 	shell:
 		"gzip -cd {input} > {output}"
