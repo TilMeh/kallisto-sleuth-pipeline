@@ -10,6 +10,7 @@ rule sleuth:
 	params:
 		sample_tsv = config["samples"],
 		kal_dirs = config["folders"]["output_folder"],
-		sample_condition = config["sleuth"]["sample_condition"]	
+		sample_condition = config["sleuth"]["sample_condition"],
+		outfile = config["folders"]["output_folder"] + "/sleuth_output.tsv"
 	script:
 		"../scripts/sleuth.R"
