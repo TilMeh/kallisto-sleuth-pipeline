@@ -65,9 +65,8 @@ rule kallisto_quant_paired:
 	params:
 		out_dir = config["folders"]["output_folder"] + "/{sample}",
 		bs_samples = config["kallisto"]["bootstrap_samples"],
-		single = lambda wildcards: config["kallisto"]["single"]
 	shell:
-		"kallisto quant -i {input[0]} -o {params.out_dir} -b {params.bs_samples} {params.single} {input[1]} {input[2]}"
+		"kallisto quant -i {input[0]} -o {params.out_dir} -b {params.bs_samples} {input[1]} {input[2]}"
 
 rule kallisto_qs_prep:
 	input:
@@ -98,7 +97,7 @@ rule kallisto_quant_single:
 		bs_samples = config["kallisto"]["bootstrap_samples"],
 		# Trying to set params via custom function
 		avg_length = lambda wildcards, input: int(open(input[2]).readlines()[0].split()[0]), #35,
-		std_devi = lambda wildcards, input: float(open(input[2]).readlines()[0].split()[0]) # 0.8
+		std_devi = lambda wildcards, input: float(open(input[2]).readlines()[0].split()[1]) # 0.8
 	shell:
 		"kallisto quant -i {input[0]} -o {params.out_dir} --single -l {params.avg_length} -s {params.std_devi} {input[1]}"
 		#"kallisto quant -i {input[0]} -o {params.out_dir} -b {params.bs_samples} --single -l {params.avg_length} -s {params.std_devi} {input[1]}"
