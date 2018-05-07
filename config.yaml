@@ -3,14 +3,14 @@
 # one row per sample. It can be parsed easily via pandas.
 
 # path to file that contains sample information 
-samples: "data/samples_single.tsv"
+samples: "data/samples_paired.tsv"
 folders:
         data_folder: "data"
         output_folder: "data/output"
         trim_folder: "data/output/trims"
 # path to reference genome fasta file (including file prefix, excluding file suffix/extension)
-#reference: "data/orf_coding_all_R64-2-1_20150113"
-reference: "data/mm_ref_GRCm38.p4_chr4"
+reference: "data/orf_coding_all_R64-2-1_20150113"
+#reference: "data/mm_ref_GRCm38.p4_chr4"
 # trim galore parameters
 trim_galore:
         phred_quality: "20"
