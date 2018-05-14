@@ -17,3 +17,5 @@ trim_galore:
 # kallisto parameters
 kallisto:
         bootstrap_samples: "60"
+deseq2:
+        results: "data/output/deseq2_output.txt"
