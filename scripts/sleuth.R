@@ -1,6 +1,6 @@
 suppressMessages({
 	library("sleuth")
-	library(biomaRt)
+	library("biomaRt")
 })
 sample_id <- t(read.delim(file.path(snakemake@params["sample_tsv"]), header = TRUE, sep="\t")["sample"])
 kal_dirs <- file.path(snakemake@params["kal_dirs"], sample_id)
@@ -37,7 +37,7 @@ print("Downloading from ensembl.org")
 
 mart <- biomaRt::useMart(biomart = "ENSEMBL_MART_ENSEMBL",
   dataset = "scerevisiae_gene_ensembl",
-  host = 'host = "ensembl.org"')
+  host = 'www.ensembl.org')
 print("2")
 t2g <- biomaRt::getBM(attributes = c("ensembl_transcript_id", "ensembl_gene_id",
     "external_gene_name"), mart = mart)
@@ -53,7 +53,7 @@ print("4")
 pca_plot <- plot_pca(so, color_by = 'condition')
 print("Printing PCA plot")
 ggplot2::ggsave(filename="data/output/plot_pca.pdf", plot=pca_plot)
-plot_group_density(so, use_filtered = TRUE, units = "est_counts",
+gdens <- plot_group_density(so, use_filtered = TRUE, units = "est_counts",
   trans = "log", grouping = setdiff(colnames(so$sample_to_covariates),
   "sample"), offset = 1)
-
+ggplot2::ggsave(filename="data/output/gdens.pdf", plot=gdens)
