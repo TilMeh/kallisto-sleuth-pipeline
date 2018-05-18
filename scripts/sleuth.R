@@ -1,6 +1,6 @@
 suppressMessages({
-	library("sleuth")
-	library("biomaRt")
+        library("sleuth")
+        library("biomaRt")
 })
 sample_id <- t(read.delim(file.path(snakemake@params["sample_tsv"]), header = TRUE, sep="\t")["sample"])
 kal_dirs <- file.path(snakemake@params["kal_dirs"], sample_id)
@@ -21,12 +21,19 @@ print("Likelihood ratio test for the models")
 so <- sleuth_lrt(so, 'reduced', 'full')
 sleuth_table <- sleuth_results(so, 'reduced:full', 'lrt', show_all = FALSE)
 sleuth_significant <- dplyr::filter(sleuth_table, qval <= 0.05)
-print("Creating plot")
 head(sleuth_significant, 20)
-sleuth_plot <- plot_bootstrap(so, sleuth_significant[1, 1], units = "est_counts", color_by = "condition")
-print("Saving plot")
-file_name <- paste("data/output/bootstrap_plot", sleuth_significant[1, 1], ".pdf", sep='', collapse='')
-ggplot2::ggsave(filename=file_name, plot=sleuth_plot)
+
+
+for (i in 1:5){
+    gen <- sleuth_significant[i, 1]
+    create_msg <- paste("Creating plot for", gen)
+    print(create_msg)
+    sleuth_plot <- plot_bootstrap(so, gen, units = "est_counts", color_by = "condition")
+    print("Saving plot")
+    file_name <- paste("data/output/bootstrap_plot", gen, ".pdf", sep='', collapse='')
+    ggplot2::ggsave(filename=file_name, plot=sleuth_plot)
+}
+
 print("Writing results to output")
 write(t(sleuth_significant), file = file.path(snakemake@params["outfile"]), sep = "\t")
 
