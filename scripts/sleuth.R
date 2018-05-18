@@ -25,7 +25,8 @@ print("Creating plot")
 head(sleuth_significant, 20)
 sleuth_plot <- plot_bootstrap(so, sleuth_significant[1, 1], units = "est_counts", color_by = "condition")
 print("Saving plot")
-ggplot2::ggsave(filename="data/output/plot.pdf", plot=sleuth_plot)
+file_name <- paste("data/output/bootstrap_plot", sleuth_significant[1, 1], ".pdf", sep='', collapse='')
+ggplot2::ggsave(filename=file_name, plot=sleuth_plot)
 print("Writing results to output")
 write(t(sleuth_significant), file = file.path(snakemake@params["outfile"]), sep = "\t")
 
@@ -38,18 +39,14 @@ print("Downloading from ensembl.org")
 mart <- biomaRt::useMart(biomart = "ENSEMBL_MART_ENSEMBL",
   dataset = "scerevisiae_gene_ensembl",
   host = 'www.ensembl.org')
-print("2")
 t2g <- biomaRt::getBM(attributes = c("ensembl_transcript_id", "ensembl_gene_id",
     "external_gene_name"), mart = mart)
-print("2.2")
 t2g <- dplyr::rename(t2g, target_id = ensembl_transcript_id,
   ens_gene = ensembl_gene_id, ext_gene = external_gene_name)
-print("3")
 so <- sleuth_prep(s2c, target_mapping = t2g)
 so <- sleuth_fit(so, ~condition, 'full')
 so <- sleuth_fit(so, ~1, 'reduced')
 so <- sleuth_lrt(so, 'reduced', 'full')
-print("4")
 pca_plot <- plot_pca(so, color_by = 'condition')
 print("Printing PCA plot")
 ggplot2::ggsave(filename="data/output/plot_pca.pdf", plot=pca_plot)
