@@ -6,7 +6,7 @@ sample_id <- t(read.delim(file.path(snakemake@params["sample_tsv"]), header = TR
 kal_dirs <- file.path(snakemake@params["kal_dirs"], sample_id)
 print("Directories containing kallisto results: \n")
 print(kal_dirs)
-s2c <- read.table(file.path(snakemake@config["samples"]), header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+s2c <- read.table(file.path(snakemake@params["sample_tsv"]), header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 print(s2c)
 print("Appending kallisto result file paths")
 s2c <- dplyr::mutate(s2c, path = kal_dirs)

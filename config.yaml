@@ -4,16 +4,49 @@
 
 # path to file that contains sample information 
 samples: "data/samples_paired.tsv"
-folders:
-        data_folder: "data"
-        output_folder: "data/output"
-        trim_folder: "data/output/trims"
+data_folder: "data"
+output_folder: "data/output"
 # path to reference genome fasta file (including file prefix, excluding file suffix/extension)
-reference: "data/orf_coding_all_R64-2-1_20150113"
-#reference: "data/mm_ref_GRCm38.p4_chr4"
+reference: 
+        # Currently has to end in .fa
+        #genome: "data/S288C_reference_sequence_R64-2-1_20150113.correct_ids"
+        #genome: "data/S288C_reference_sequence_R64-2-1_20150113"
+        genome: "data/orf_coding_all_R64-2-1_20150113"
+        gff: "data/saccharomyces_cerevisiae_R64-2-1_20150113_short.gff"
+# htseq-count parameters
+htseq-count:
+        out: "data/output/htseq-count"
+        stranded: "no"
+        type: "gene"
+        gene_id: "ID"
 # trim galore parameters
 trim_galore:
+        out: "data/output/trims"
         phred_quality: "20"
+# hisat2 parameters
+hisat2:
+        out: "data/output/hisat2"
 # kallisto parameters
 kallisto:
+        out: "data/output/kallisto"
         bootstrap_samples: "60"
+        # parameters for single end reads:
+        # average fragment length
+        avg_frag_len: ""
+        # standard deviation of fragment length
+        std_dev: ""
+# deseq2 parameters
+deseq2:
+        # Output file if counts were provided by kallisto
+        kal_out: "data/output/deseq2_kallisto_output.txt"
+        # Output file if counts were provided by htseq-count
+        htseq_out: "data/output/deseq2_htseq_output.txt"
+        # Save MA-plot as PNG
+        plot_ma: "data/output/deseq2_kallisto_plotMA"
+        # Save count plot as PNG
+        plot_counts: "data/output/deseq2_kallisto_plotCounts"
+# sleuth parameters
+sleuth:
+        out: "data/output/sleuth"
+samtools:
+        out: "data/output/samtools"
