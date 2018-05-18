@@ -9,6 +9,7 @@ dependencies:
   - bioconductor-zlibbioc=1.24.0=r3.4.1_0
   - cutadapt=1.16=py36_1
   - fastqc=0.11.4=0
+  - hisat2=2.1.0=py36pl5.22.0_0
   - kallisto=0.44.0=hdf51.8.17_1
   - r-sleuth=0.29.0=r3.4.1_0
   - trim-galore=0.4.5=pl5.22.0_1
