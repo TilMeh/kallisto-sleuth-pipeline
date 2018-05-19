@@ -9,10 +9,10 @@ ddsHTSeq <- DESeq(ddsHTSeq)
 res <- results(ddsHTSeq, name=resultsNames(ddsHTSeq)[2])
 write.table(res, file.path(snakemake@output))
 
-png(file.path(snakemake@params["plot_ma"] + ".png"))
+png(file.path(paste(snakemake@params["plot_ma"], ".png", sep="")))
 plotMA(res, ylim = c(-3,3))
 dev.off()
 
-png(file.path(snakemake@params["plot_counts"]))
-plotCounts(dds, gene=which.min(res$padj), intgroup="condition")
+png(file.path(paste(snakemake@params["plot_counts"], ".png", sep="")))
+plotCounts(ddsHTSeq, gene=which.min(res$padj), intgroup="condition")
 dev.off()

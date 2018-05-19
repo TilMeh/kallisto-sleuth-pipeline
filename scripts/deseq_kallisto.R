@@ -27,15 +27,15 @@ res <- results(dds, name = resultsNames(dds)[2])
 #resLFC <- lfcShrink(dds, coeff=2, type="apeglm")
 write.table(res, file.path(snakemake@output))
 
-png(file.path(snakemake@params["plot_ma"] + ".png"))
+png(file.path(paste(snakemake@params["plot_ma"], ".png"), sep=""))
 plotMA(res, ylim = c(-3,3))
 dev.off()
 
-png(file.path(snakemake@params["plot_counts"]))
+png(file.path(paste(snakemake@params["plot_counts"], ".png", sep="")))
 plotCounts(dds, gene=which.min(res$padj), intgroup="condition")
 dev.off()
 
 
-#png(file.path(snakemake@params["plot_ma"] + "_lfc.png"))
+#png(file.path(paste(snakemake@params["plot_ma"], "_lfc.png", sep="")))
 #plotMA(resLFC, ylim = c(-3,3))
 #dev.off()

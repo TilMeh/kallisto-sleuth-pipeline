@@ -42,11 +42,14 @@ deseq2:
         # Output file if counts were provided by htseq-count
         htseq_out: "data/output/deseq2_htseq_output.txt"
         # Save MA-plot as PNG
-        plot_ma: "data/output/deseq2_kallisto_plotMA"
+        plot_ma: "data/output/deseq2_plotMA"
         # Save count plot as PNG
-        plot_counts: "data/output/deseq2_kallisto_plotCounts"
+        plot_counts: "data/output/deseq2_plotCounts"
 # sleuth parameters
 sleuth:
         out: "data/output/sleuth"
 samtools:
         out: "data/output/samtools"
+fastqc:
+	pre_trim: "data/output/fastqc/pre_trim"
+	post_trim: "data/output/fastqc/post_trim"

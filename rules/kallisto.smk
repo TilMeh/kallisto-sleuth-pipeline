@@ -11,7 +11,9 @@ rule kallisto_quant_paired:
 	input:
 		config["reference"]["genome"] + ".idx",
 		config["trim_galore"]["out"] + "/{sample}_1_val_1.fq.gz",
-		config["trim_galore"]["out"] + "/{sample}_2_val_2.fq.gz"
+		config["trim_galore"]["out"] + "/{sample}_2_val_2.fq.gz",
+		config["fastqc"][pre_trim] + "/{sample}.html",
+		config["fastqc"][post_trim] + "/{sample}.html"
 	output:
 		config["kallisto"]["out"] + "/{sample}/abundance.h5",
 		config["kallisto"]["out"] + "/{sample}/abundance.tsv",
