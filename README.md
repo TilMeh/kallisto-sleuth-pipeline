@@ -13,7 +13,7 @@ bash ./Miniconda3-latest-Linux-x86_64.sh
 conda config --add channels defaults
 conda config --add channels conda-forge
 conda config --add channels bioconda
-conda install kallisto r-sleuth trim-galore bioconductor-biomart
+conda install kallisto r-sleuth trim-galore bioconductor-biomart bioconductor-deseq2
 ```
 
 * Clone Repository (or update it with `git pull`)
