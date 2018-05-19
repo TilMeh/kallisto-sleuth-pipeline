@@ -27,7 +27,7 @@ res <- results(dds, name = resultsNames(dds)[2])
 #resLFC <- lfcShrink(dds, coeff=2, type="apeglm")
 write.table(res, file.path(snakemake@output))
 
-png(file.path(paste(snakemake@params["plot_ma"], ".png"), sep=""))
+png(file.path(paste(snakemake@params["plot_ma"], ".png", sep="")))
 plotMA(res, ylim = c(-3,3))
 dev.off()
 

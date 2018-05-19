@@ -4,7 +4,9 @@
 
 # path to file that contains sample information 
 samples: "data/samples_paired.tsv"
+# path to folder that contains raw reads and reference files
 data_folder: "data"
+# path to folder where output of the pipeline will be saved
 output_folder: "data/output"
 # path to reference genome fasta file (including file prefix, excluding file suffix/extension)
 reference: 
@@ -51,5 +53,5 @@ sleuth:
 samtools:
         out: "data/output/samtools"
 fastqc:
-	pre_trim: "data/output/fastqc/pre_trim"
-	post_trim: "data/output/fastqc/post_trim"
+        pre_trim: "data/output/fastqc/pre_trim"
+        post_trim: "data/output/fastqc/post_trim"

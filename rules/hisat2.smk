@@ -15,8 +15,8 @@ rule hisat_map:
 		config["hisat2"]["out"] + "/" + config["reference"]["genome"] + ".1.ht2",
 		config["trim_galore"]["out"] + "/{sample}_1_val_1.fq.gz",
                 config["trim_galore"]["out"] + "/{sample}_2_val_2.fq.gz",
-		config["fastqc"]["pre_trim"] + "/{sample}.html",
-		config["fastqc"]["post_trim"] + "/{sample}.html"
+		config["fastqc"]["pre_trim"] + "/{sample}_1_fastqc.html",
+		config["fastqc"]["post_trim"] + "/{sample}_1_val_1_fastqc.html"
 	output:
 		config["hisat2"]["out"] + "/{sample}.sam"
 	conda: "../envs/ks-env.yaml"

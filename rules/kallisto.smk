@@ -2,18 +2,18 @@ rule kallisto_index:
 	input:
 		config["reference"]["genome"] + ".fa"
 	output:
-		config["reference"]["genome"] + ".idx"
+		config["kallisto"]["out"] + "/" + config["reference"]["genome"] + ".idx"
 	conda: "../envs/ks-env.yaml"
 	shell:
 		"kallisto index -i {output[0]} {input[0]}"
 
 rule kallisto_quant_paired:
 	input:
-		config["reference"]["genome"] + ".idx",
+		config["kallisto"]["out"] + "/" + config["reference"]["genome"] + ".idx",
 		config["trim_galore"]["out"] + "/{sample}_1_val_1.fq.gz",
 		config["trim_galore"]["out"] + "/{sample}_2_val_2.fq.gz",
-		config["fastqc"][pre_trim] + "/{sample}.html",
-		config["fastqc"][post_trim] + "/{sample}.html"
+		config["fastqc"]["pre_trim"] + "/{sample}_1_fastqc.html",
+		config["fastqc"]["post_trim"] + "/{sample}_1_val_1_fastqc.html"
 	output:
 		config["kallisto"]["out"] + "/{sample}/abundance.h5",
 		config["kallisto"]["out"] + "/{sample}/abundance.tsv",
@@ -27,8 +27,10 @@ rule kallisto_quant_paired:
 
 rule kallisto_quant_single:
 	input:
-		config["reference"]["genome"] + ".idx",
-		config["trim_galore"]["out"] + "/{sample}_trimmed.fq.gz"
+		config["kallisto"]["out"] + "/" + config["reference"]["genome"] + ".idx",
+		config["trim_galore"]["out"] + "/{sample}_trimmed.fq.gz",
+		config["fastqc"]["pre_trim"] + "/{sample}_fastqc.html",
+		config["fastqc"]["post_trim"] + "/{sample}_fastqc.html"
 	output:
 		config["kallisto"]["out"] + "/{sample}/abundance.h5",
 		config["kallisto"]["out"] + "/{sample}/abundance.tsv",
