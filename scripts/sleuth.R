@@ -30,7 +30,7 @@ for (i in 1:5){
     print(create_msg)
     sleuth_plot <- plot_bootstrap(so, gen, units = "est_counts", color_by = "condition")
     print("Saving plot")
-    file_name <- paste("data/output/bootstrap_plot", gen, ".pdf", sep='', collapse='')
+    file_name <- paste(snakemake@params["bs_plot"], '/bootstrap_', gen, ".pdf", sep='', collapse='')
     ggplot2::ggsave(filename=file_name, plot=sleuth_plot)
 }
 
@@ -56,8 +56,8 @@ so <- sleuth_fit(so, ~1, 'reduced')
 so <- sleuth_lrt(so, 'reduced', 'full')
 pca_plot <- plot_pca(so, color_by = 'condition')
 print("Printing PCA plot")
-ggplot2::ggsave(filename="data/output/plot_pca.pdf", plot=pca_plot)
+ggplot2::ggsave(filename=snakemake@params["pca_plot"], plot=pca_plot)
 gdens <- plot_group_density(so, use_filtered = TRUE, units = "est_counts",
   trans = "log", grouping = setdiff(colnames(so$sample_to_covariates),
   "sample"), offset = 1)
-ggplot2::ggsave(filename="data/output/gdens.pdf", plot=gdens)
+ggplot2::ggsave(filename=snakemake@params["gdens_plot"], plot=gdens)

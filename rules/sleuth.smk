@@ -11,6 +11,9 @@ rule sleuth:
 		sample_tsv = config["samples"],
 		kal_dirs = config["kallisto"]["out"],
 		outfile = config["sleuth"]["out"] + "/sleuth_output.tsv",
-		plot = config["sleuth"]["out"] + "/plot.pdf"
+		bs_plot = config["sleuth"]["out"] + "/bootstrap_",
+		pca_plot = config["sleuth"]["out"] + "/pca_plot.pdf",
+		gdens_plot = config["sleuth"]["out"] + "/gdens_plot.pdf"
+		
 	script:
 		"../scripts/sleuth.R"
