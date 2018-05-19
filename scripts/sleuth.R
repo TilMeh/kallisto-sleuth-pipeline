@@ -44,7 +44,7 @@ print("Downloading from ensembl.org")
 #biocLite("biomaRt")
 
 mart <- biomaRt::useMart(biomart = "ENSEMBL_MART_ENSEMBL",
-  dataset = "scerevisiae_gene_ensembl",
+  dataset = snakemake@params["ensembl_data"],
   host = 'www.ensembl.org')
 t2g <- biomaRt::getBM(attributes = c("ensembl_transcript_id", "ensembl_gene_id",
     "external_gene_name"), mart = mart)
