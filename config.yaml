@@ -50,6 +50,7 @@ deseq2:
 # sleuth parameters
 sleuth:
         out: "data/output/sleuth"
+	ensembl: "scerevisiae_gene_ensembl"
 samtools:
         out: "data/output/samtools"
 fastqc:
