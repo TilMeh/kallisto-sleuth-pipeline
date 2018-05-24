@@ -8,10 +8,13 @@ samples = pd.read_table(config["samples"], index_col="sample")
 
 rule all:
 	input:
-	# The first rule should define the default target files
-	# Subsequent target rules can be specified below. They should start with all_*.
+		# Uncomment one of the following lines for desired workflow
+		
+		# kallisto -> sleuth
 		#config["sleuth"]["out"] + "/sleuth_output.tsv"
-		config["deseq2"]["kal_out"]
+		# kallisto -> deseq2
+		#config["deseq2"]["kal_out"]
+		# Hisat2 -> deseq2
 		#config["deseq2"]["htseq_out"]
 		
 

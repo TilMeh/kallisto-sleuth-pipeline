@@ -4,39 +4,53 @@
 
 # path to file that contains sample information 
 samples: "data/samples_paired.tsv"
+
 # path to folder that contains raw reads and reference files
 data_folder: "data"
-# path to folder where output of the pipeline will be saved
-output_folder: "data/output"
-# path to reference genome fasta file (including file prefix, excluding file suffix/extension)
+
+# reference files
 reference: 
-        # Currently has to end in .fa
-        #genome: "data/S288C_reference_sequence_R64-2-1_20150113.correct_ids"
-        #genome: "data/S288C_reference_sequence_R64-2-1_20150113"
-        genome: "data/orf_coding_all_R64-2-1_20150113"
+        # FASTA reference genome (path and file prefix only). File suffix has to be ".fa"
+        genome: "data/S288C_reference_sequence_R64-2-1_20150113.correct_ids"
+        #genome: "data/orf_coding_all_R64-2-1_20150113"
+        # GFF/GTF annotation
         gff: "data/saccharomyces_cerevisiae_R64-2-1_20150113_short.gff"
+
 # htseq-count parameters
 htseq-count:
+        # output directory
         out: "data/output/htseq-count"
+        # are the samples stranded? [yes|no|reverse]
         stranded: "no"
+        # 
         type: "gene"
+        # 
         gene_id: "ID"
+
 # trim galore parameters
 trim_galore:
+        # output directory
         out: "data/output/trims"
+        # cutoff score for phred quality
         phred_quality: "20"
+
 # hisat2 parameters
 hisat2:
+        # output directory
         out: "data/output/hisat2"
+
 # kallisto parameters
 kallisto:
+        # output directory
         out: "data/output/kallisto"
+        # number of bootstrap samples
         bootstrap_samples: "60"
         # parameters for single end reads:
         # average fragment length
         avg_frag_len: ""
         # standard deviation of fragment length
         std_dev: ""
+
 # deseq2 parameters
 deseq2:
         # Output file if counts were provided by kallisto
@@ -47,14 +61,31 @@ deseq2:
         plot_ma: "data/output/deseq2_plotMA"
         # Save count plot as PNG
         plot_counts: "data/output/deseq2_plotCounts"
+
 # sleuth parameters
 sleuth:
+        # output directory
         out: "data/output/sleuth"
+        # ensembl reference string for annotations
         ensembl: "scerevisiae_gene_ensembl"
+        # create plots for top n genes with lowest p-value 
         n_genes: "20"
+        # cutoff value for p-values
         p_val_cutoff: "0.05"
+
+# samtools parameters
 samtools:
+        # output directory
         out: "data/output/samtools"
+
+# fastqc parameters
 fastqc:
+        # output directory for pre-trim quality report
         pre_trim: "data/output/fastqc/pre_trim"
+        # output directory for post-trim quality report
         post_trim: "data/output/fastqc/post_trim"
+
+# multiqc parameters
+multiqc:
+        # output directory
+        out: "data/output/multiqc"
