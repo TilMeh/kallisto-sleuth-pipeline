@@ -21,7 +21,7 @@ so <- sleuth_fit(so, ~1, 'reduced')
 print("Likelihood ratio test for the models")
 so <- sleuth_lrt(so, 'reduced', 'full')
 sleuth_table <- sleuth_results(so, 'reduced:full', 'lrt', show_all = FALSE)
-sleuth_significant <- dplyr::filter(sleuth_table, pval <= 0.05)
+sleuth_significant <- dplyr::filter(sleuth_table, pval <= as.double(snakemake@params["cutoff"]))
 sleuth_significant <- sleuth_significant[order(sleuth_significant$pval), ]
 if (n > nrow(sleuth_significant)){
     n <- nrow(sleuth_significant)

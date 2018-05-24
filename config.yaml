@@ -50,8 +50,9 @@ deseq2:
 # sleuth parameters
 sleuth:
         out: "data/output/sleuth"
-	ensembl: "scerevisiae_gene_ensembl"
-	n_genes: "20"
+        ensembl: "scerevisiae_gene_ensembl"
+        n_genes: "20"
+        p_val_cutoff: "0.05"
 samtools:
         out: "data/output/samtools"
 fastqc:

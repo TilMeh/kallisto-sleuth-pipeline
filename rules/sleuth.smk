@@ -16,6 +16,6 @@ rule sleuth:
 		gdens_plot = config["sleuth"]["out"] + "/gdens_plot.pdf",
 		ensembl_data = config["sleuth"]["ensembl"],
 		n_genes = config["sleuth"]["n_genes"],
-
+		cutoff = config["sleuth"]["p_val_cutoff"]
 	script:
 		"../scripts/sleuth.R"
