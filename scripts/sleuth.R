@@ -4,6 +4,7 @@ suppressMessages({
 })
 sample_id <- t(read.delim(file.path(snakemake@params["sample_tsv"]), header = TRUE, sep="\t")["sample"])
 kal_dirs <- file.path(snakemake@params["kal_dirs"], sample_id)
+n <- snakemake@params['n_genes']
 print("Directories containing kallisto results: \n")
 print(kal_dirs)
 s2c <- read.table(file.path(snakemake@params["sample_tsv"]), header = TRUE, sep = "\t", stringsAsFactors = FALSE)
@@ -20,11 +21,15 @@ so <- sleuth_fit(so, ~1, 'reduced')
 print("Likelihood ratio test for the models")
 so <- sleuth_lrt(so, 'reduced', 'full')
 sleuth_table <- sleuth_results(so, 'reduced:full', 'lrt', show_all = FALSE)
-sleuth_significant <- dplyr::filter(sleuth_table, qval <= 0.05)
-head(sleuth_significant, 20)
+sleuth_significant <- dplyr::filter(sleuth_table, pval <= 0.05)
+sleuth_significant <- sleuth_significant[order(sleuth_significant$pval), ]
+if (n > nrow(sleuth_significant_999)){
+    n <- nrow(sleuth_significant_999)
+}
+head(sleuth_significant, n)
 
 
-for (i in 1:5){
+for (i in 1:n){
     gen <- sleuth_significant[i, 1]
     create_msg <- paste("Creating plot for", gen)
     print(create_msg)
