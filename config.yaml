@@ -51,6 +51,7 @@ deseq2:
 sleuth:
         out: "data/output/sleuth"
 	ensembl: "scerevisiae_gene_ensembl"
+	n_genes: "20"
 samtools:
         out: "data/output/samtools"
 fastqc:

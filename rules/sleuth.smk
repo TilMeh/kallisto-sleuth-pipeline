@@ -14,6 +14,8 @@ rule sleuth:
 		bs_plot = config["sleuth"]["out"] + "/bootstrap_",
 		pca_plot = config["sleuth"]["out"] + "/pca_plot.pdf",
 		gdens_plot = config["sleuth"]["out"] + "/gdens_plot.pdf",
-		ensembl_data = config["sleuth"]["ensembl"]
+		ensembl_data = config["sleuth"]["ensembl"],
+		n_genes = config["sleuth"]["n_genes"],
+
 	script:
 		"../scripts/sleuth.R"

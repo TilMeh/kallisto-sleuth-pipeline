@@ -23,8 +23,8 @@ so <- sleuth_lrt(so, 'reduced', 'full')
 sleuth_table <- sleuth_results(so, 'reduced:full', 'lrt', show_all = FALSE)
 sleuth_significant <- dplyr::filter(sleuth_table, pval <= 0.05)
 sleuth_significant <- sleuth_significant[order(sleuth_significant$pval), ]
-if (n > nrow(sleuth_significant_999)){
-    n <- nrow(sleuth_significant_999)
+if (n > nrow(sleuth_significant)){
+    n <- nrow(sleuth_significant)
 }
 head(sleuth_significant, n)
 
